@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 728" role="img" aria-labelledby="collection-title collection-desc">
+  <title id="collection-title">From index to evidence</title>
+  <desc id="collection-desc">A historical index pointed to an exposed directory. A partial collection produced a local inventory with file sizes and SHA-256 digests. The recovered material included HTTP captures, scripts and configurations, and logs and datasets.</desc>
+  <defs>
+    <marker id="collection-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M1 1l8 4-8 4" fill="none" stroke="#237462" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </marker>
+  </defs>
+  <style>
+    text{font-family:system-ui,"Segoe UI",sans-serif;fill:#152b3c}
+    .heading{font-size:36px;font-weight:750;letter-spacing:-.6px}
+    .title{font-size:30px;font-weight:720}
+    .note{font-size:25px;fill:#384f5c}
+    .edge{font-size:22px;font-weight:700;fill:#176351}
+    .branch{font-size:25px;font-weight:690}
+    .icon{fill:none;stroke:#183b48;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+    .connector{fill:none;stroke:#237462;stroke-width:3}
+  </style>
+  <rect x="1" y="1" width="638" height="726" rx="20" fill="#f3f8f6" stroke="#c6dad4" stroke-width="2"/>
+  <text x="32" y="59" class="heading">From index to evidence</text>
+  <rect x="32" y="86" width="576" height="96" rx="13" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <rect x="50" y="104" width="58" height="58" rx="11" fill="#d8efe8"/>
+  <g class="icon" transform="translate(63 117)">
+    <circle cx="13" cy="13" r="9"/>
+    <path d="M20 20l9 9M10 13h6"/>
+  </g>
+  <text x="126" y="125" class="title">Historical file index</text>
+  <text x="126" y="155" class="note">Indexed configuration supplied the lead</text>
+  <path d="M80 182v41" class="connector" marker-end="url(#collection-arrow)"/>
+  <text x="101" y="210" class="edge">Led to</text>
+  <rect x="32" y="227" width="576" height="120" rx="13" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <rect x="50" y="245" width="58" height="58" rx="11" fill="#d8efe8"/>
+  <g class="icon" transform="translate(63 258)">
+    <path d="M3 9h11l4 4h12v15H3zM3 14V5h13l4 4h9v4"/>
+  </g>
+  <text x="126" y="266" class="title">Public directory listing</text>
+  <text x="126" y="297" class="note">Files were retrieved from the listing</text>
+  <text x="126" y="328" font-size="22" font-weight="720" fill="#804024" style="fill:#804024">Partial coverage · Some paths unavailable</text>
+  <path d="M80 347v41" class="connector" marker-end="url(#collection-arrow)"/>
+  <text x="101" y="375" class="edge">Recovered files</text>
+  <rect x="32" y="392" width="576" height="102" rx="13" fill="#deefe8" stroke="#b5d7ca" stroke-width="2"/>
+  <rect x="50" y="414" width="58" height="58" rx="11" fill="#f8fffc"/>
+  <g class="icon" transform="translate(63 427)">
+    <rect x="5" y="5" width="22" height="23" rx="3"/>
+    <path d="M10 11l2 2 4-4M18 12h5M10 21l2 2 4-4M18 22h5"/>
+  </g>
+  <text x="126" y="433" class="title">Offline inventory</text>
+  <text x="126" y="464" class="note">File sizes and SHA-256 digests</text>
+  <path d="M320 494v76M124 570h392" class="connector"/>
+  <text x="337" y="540" class="edge">Catalogued</text>
+  <path d="M124 570v27" class="connector" marker-end="url(#collection-arrow)"/>
+  <path d="M320 570v27" class="connector" marker-end="url(#collection-arrow)"/>
+  <path d="M516 570v27" class="connector" marker-end="url(#collection-arrow)"/>
+  <rect x="32" y="603" width="184" height="94" rx="12" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <rect x="228" y="603" width="184" height="94" rx="12" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <rect x="424" y="603" width="184" height="94" rx="12" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <text x="124" y="642" class="branch" text-anchor="middle">HTTP</text>
+  <text x="124" y="671" class="branch" text-anchor="middle">captures</text>
+  <text x="320" y="642" class="branch" text-anchor="middle">Scripts and</text>
+  <text x="320" y="671" class="branch" text-anchor="middle">configurations</text>
+  <text x="516" y="642" class="branch" text-anchor="middle">Logs and</text>
+  <text x="516" y="671" class="branch" text-anchor="middle">datasets</text>
+</svg>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#101828">
+  <meta name="description" content="A forensic case study on reconstructing application activity from historical HTTP captures recovered from an exposed directory.">
+  <title>Reconstructing University Application Access From an Open Directory</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./timeline.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="masthead" id="top">
+    <div class="shell masthead-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true"></span> Research notes</a>
+      <nav aria-label="Main">
+        <a href="#discovery">Discovery</a>
+        <a href="#sessions">Sessions</a>
+        <a href="#exhibits">Evidence index</a>
+      </nav>
+    </div>
+  </header>
+  <main id="content">
+    <section class="hero" aria-labelledby="title">
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Threat research · Case study</p>
+          <h1 id="title">Reconstructing university application access from an <em>open directory</em></h1>
+          <p class="hero-lede">A public file listing exposed tasking material and historical HTTP captures. An exact token match across two exchanges showed what one authenticated session did.</p>
+          <a class="primary-link" href="#findings">Read the investigation</a>
+        </div>
+        <div class="hero-art" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <div class="scope">
+      <dl class="shell scope-inner">
+        <div><dt>Recovered files</dt><dd>Several thousand</dd></div>
+        <div><dt>Explicit institutional target</dt><dd>One university</dd></div>
+        <div><dt>Identities linked to returned data</dt><dd>Two</dd></div>
+      </dl>
+    </div>
+
+    <div class="shell article-layout">
+      <aside class="contents">
+        <nav aria-labelledby="contents-heading">
+          <p id="contents-heading" class="eyebrow">In this report</p>
+          <ol>
+            <li><a href="#findings">Key findings</a></li>
+            <li><a href="#discovery">Discovery and collection</a></li>
+            <li><a href="#tasking">The ARTeX link</a></li>
+            <li><a href="#captures">Reconstructing the captures</a></li>
+            <li><a href="#sessions">Three days of activity</a></li>
+            <li><a href="#outcomes">Reading HTTP outcomes</a></li>
+            <li><a href="#tooling">Tool activity and impact</a></li>
+            <li><a href="#detection">Detection leads</a></li>
+            <li><a href="#exhibits">Evidence index</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <article class="report" aria-label="Open-directory investigation">
+        <section class="report-section" id="findings" aria-labelledby="findings-heading">
+          <h2 id="findings-heading">Key findings</h2>
+          <p class="section-lede">An indexed file led us to a public directory containing several thousand files. Among the scripts and task definitions were saved HTTP exchanges involving a university’s applications.</p>
+          <p>One pair of exchanges stood out. A token issued in one response appeared byte for byte in a later request, and the application returned records. A separate staff portal response could be tied to a second identity. A third service reported an authenticated session whose account could not be linked to either identity.</p>
+          <p>The recovered startup files and task definitions link <strong>ARTeX</strong> to the operation’s preparation and targeting. Application activity is documented in the saved HTTP captures. The execution link between an individual ARTeX task and a captured request remains unverified.</p>
+          <p class="report-note">Institutional identifiers and exact dates are withheld. The public exhibits summarize retained evidence using aliases and redrawn figures.</p>
+        </section>
+
+        <section class="report-section" id="discovery" aria-labelledby="discovery-heading">
+          <h2 id="discovery-heading">Discovery and collection</h2>
+          <p>A historical file record in Hunt.io led me to the host, where I found the public directory listing. We used urlscan.io records to assess other candidates. The listing exposed configuration files, tasking material, structured datasets, logs and saved traffic. The directory server’s operator remained unverified.</p>
+          <p>We used a custom Python collector built with Requests to retrieve listed files through Tor Browser’s SOCKS proxy. Across successive passes, the collector recorded retrieval outcomes and computed SHA-256 digests for the local copies. Size and hash verification checked the integrity of the copies used for review. Coverage remained partial. A separate attempt limited to recently modified files timed out before the root listing could be read.</p>
+
+          <figure class="figure">
+            <img src="./figures/collection.svg" width="640" height="728" loading="lazy" alt="An indexed file led to a public listing. Partial acquisition and a verified local inventory yielded captures, tasking artifacts and tool output.">
+            <figcaption>Discovery and acquisition. The listing and retrieval manifest document what we could collect. The inventory represents the recovered files.</figcaption>
+          </figure>
+
+          <div class="exhibit" id="e-01">
+            <p class="exhibit-label">E-01 · Acquisition ledger</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Recorded result</th><th scope="col">Inventory consequence</th></tr></thead>
+                <tbody>
+                  <tr><td>Listed file retrieved and locally hashed</td><td>Included in the verified collection.</td></tr>
+                  <tr><td>Listed file returned <code>404</code></td><td>Recorded as unavailable.</td></tr>
+                  <tr><td>Candidate path returned a page in place of a directory listing</td><td>File enumeration stopped at that path.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section" id="tasking" aria-labelledby="tasking-heading">
+          <h2 id="tasking-heading">The ARTeX link</h2>
+          <p>The startup and tasking artifacts show that ARTeX was prepared for use. The directory held files that referenced the framework, alongside task definitions that explicitly named one university. Some recovered files matched older indexed copies by SHA-256. Together, the artifacts place ARTeX in the toolkit and identify the institution as an intended target in the tasking material.</p>
+          <p>We inventoried the files with Python and inspected scripts, executable structure and packaged components offline. The archive review used <code>tarfile</code> to examine member listings and contents. We compared packaged components with recovered source code to verify what the files could do.</p>
+          <div class="evidence-chain" aria-label="Evidence linking ARTeX to preparation">
+            <div><span class="eyebrow">Recovered</span><strong>ARTeX startup and configuration artifacts</strong></div>
+            <div><span class="eyebrow">Explicit</span><strong>University named in task definitions</strong></div>
+            <div><span class="eyebrow">Unresolved</span><strong>Task execution linked to a captured request</strong></div>
+          </div>
+        </section>
+
+        <section class="report-section" id="captures" aria-labelledby="captures-heading">
+          <h2 id="captures-heading">Reconstructing the captures</h2>
+          <p>The recovered corpus contained HAR files and Burp-format XML exports. We wrote offline Python parsers to extract request and response pairs, decode stored content as needed and normalize times for a single timeline. Where possible, we compared capture times against HTTP <code>Date</code> headers. We kept undated material outside the timeline.</p>
+          <p>Some exchanges appeared in more than one export. In one overlap, two XML files recorded the same capture timestamp and matching SHA-256 digests for the full request and response. We treated these as two views of one exchange. Other similarities provided correlation leads with weaker support. The recovered Burp-format files were the inputs to our offline analysis. The proxy operator and capture workstation remain unknown.</p>
+
+          <div class="exhibit" id="e-02">
+            <p class="exhibit-label">E-02 · One exchange in two exports</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Comparison field</th><th scope="col">XML export A</th><th scope="col">XML export B</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Capture timestamp</th><td><code>T1</code></td><td><code>T1</code></td></tr>
+                  <tr><th scope="row">Request digest</th><td><code>REQ-A</code></td><td><code>REQ-A</code></td></tr>
+                  <tr><th scope="row">Response digest</th><td><code>RES-A</code></td><td><code>RES-A</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="exhibit-note">Equal labels represent equal values in the retained captures. The timestamps and digests in this exhibit are aliases.</p>
+          </div>
+        </section>
+
+        <section class="report-section" id="sessions" aria-labelledby="sessions-heading">
+          <h2 id="sessions-heading">Three days of activity</h2>
+          <p class="section-lede">The first saved request establishes the beginning of the visible record. How the session material was originally obtained remains unknown.</p>
+
+          <figure class="figure">
+            <img src="./figures/sessions.svg" width="640" height="956" loading="lazy" alt="Three-day summary. Day one contains profile, mail and institutional data, plus federation and an application error. Day two contains token correlation, responses for a second identity and other attempts. Day three contains remote-access federation with no tunnel confirmation.">
+            <figcaption>Captured activity by relative day. Events from separate sessions appear in parallel. The figure groups events by evidence type.</figcaption>
+          </figure>
+
+          <div class="filters" id="filters" hidden aria-label="Filter timeline entries" role="group">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" data-filter="response" aria-pressed="false">Application responses</button>
+            <button type="button" data-filter="auth" aria-pressed="false">Authentication</button>
+            <button type="button" data-filter="attempt" aria-pressed="false">Attempts</button>
+          </div>
+          <p class="screen-reader" id="filter-status" role="status"></p>
+          <div class="timeline">
+            <section class="timeline-day" aria-labelledby="day-1">
+              <h3 class="day-label" id="day-1">Day 1</h3>
+              <ul class="events">
+                <li data-kind="response">
+                  <span class="tag tag-response">Application response</span>
+                  <h4>Cloud profile, mailbox metadata and institutional records</h4>
+                  <p>A profile identifier matched the identity declared in the token sent with the request. Other responses returned message metadata and institutional records. Separately, the help desk reported an authenticated state in its response.</p>
+                </li>
+                <li data-kind="auth">
+                  <span class="tag tag-auth">Authentication</span>
+                  <h4>Federation across services</h4>
+                  <p>Saved identity-provider and relying-application exchanges showed SAML federation, including toward a remote-access service. The application response determined what could be established for each service.</p>
+                </li>
+                <li data-kind="attempt">
+                  <span class="tag tag-attempt">Attempt</span>
+                  <h4>An application returned an error during a change request</h4>
+                  <p>The response carried an HTTP success code and an application exception. The response contained no usable result for the requested operation.</p>
+                </li>
+              </ul>
+            </section>
+            <section class="timeline-day" aria-labelledby="day-2">
+              <h3 class="day-label" id="day-2">Day 2</h3>
+              <ul class="events">
+                <li data-kind="response">
+                  <span class="tag tag-response">Application response</span>
+                  <h4>Renewed access token used in a recorded API request</h4>
+                  <p>A token issued during session renewal matched the token in a later request. The API returned records. Another saved exchange linked an issued mail access token to a response with conversation records.</p>
+                </li>
+                <li data-kind="response">
+                  <span class="tag tag-response">Application response</span>
+                  <h4>Staff portal data tied to a second identity</h4>
+                  <p>The staff portal returned data for an identity distinct from the one in the cloud mail captures. Help desk responses declaring an authenticated state reappeared that day.</p>
+                </li>
+                <li data-kind="attempt">
+                  <span class="tag tag-attempt">Attempt</span>
+                  <h4>Rejected API call and an unresolved password reset</h4>
+                  <p>A separate API request returned <code>401</code>. In another flow, the identity provider recorded a completed MFA step. The final reset response had empty result fields, leaving the password change unverified.</p>
+                </li>
+              </ul>
+            </section>
+            <section class="timeline-day" aria-labelledby="day-3">
+              <h3 class="day-label" id="day-3">Day 3</h3>
+              <ul class="events">
+                <li data-kind="auth">
+                  <span class="tag tag-auth">Authentication</span>
+                  <h4>Remote-access federation recurred</h4>
+                  <p>The exchanges showed federation followed by a remote-access portal page. A VPN tunnel and access to internal systems remained unverified.</p>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <figure class="figure figure-spaced" id="e-03">
+            <p class="exhibit-label">E-03 · The token match</p>
+            <img src="./figures/token-match.svg" width="640" height="574" loading="lazy" alt="On Day 2 a renewal response issued an access token. The same token bytes appeared in a later API request whose response contained application records. The match was made offline.">
+            <figcaption>The match was made offline against saved exchanges. The later response returned records, which establishes observed use in the capture. How the earlier session was obtained and who controlled it remain unresolved.</figcaption>
+          </figure>
+        </section>
+
+        <section class="report-section" id="outcomes" aria-labelledby="outcomes-heading">
+          <h2 id="outcomes-heading">Reading HTTP outcomes</h2>
+          <p>The response body made the difference in several cases. Two responses carrying <code>200 OK</code> supported different conclusions. One returned application data and the other contained a functional exception. A remote-access page documented a point reached in federation. Tunnel establishment would require VPN session telemetry.</p>
+          <div class="exhibit" id="e-04">
+            <p class="exhibit-label">E-04 · Status and application outcome</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Recorded exchange</th><th scope="col">Supported conclusion</th></tr></thead>
+                <tbody>
+                  <tr><td><code>200</code> and an application body containing records</td><td>The application returned data in the captured session.</td></tr>
+                  <tr><td><code>200</code> and an application exception with an empty result</td><td>The application returned an error. Completion of the change remains unverified.</td></tr>
+                  <tr><td><code>401</code> from an API</td><td>That request was rejected.</td></tr>
+                  <tr><td>Federated redirect followed by a remote-access portal page</td><td>The flow reached the portal. A live tunnel remains unverified.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section" id="tooling" aria-labelledby="tooling-heading">
+          <h2 id="tooling-heading">Tool activity and impact</h2>
+          <p>The directory contained proxy exports, reconnaissance output, automation logs and tool configuration files. The execution hosts and the identities of the people who ran the tools remain unverified.</p>
+
+          <div class="exhibit" id="e-05">
+            <p class="exhibit-label">E-05 · Tool artifacts and what they establish</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Tool and recovered artifact</th><th scope="col">What the evidence supports</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Burp Suite.</strong> XML exports with <code>burpVersion</code> and <code>exportTime</code> attributes, plus scripts that parse the exports.</td><td>The attributes identify the export format. Who produced the captures, where the proxy ran and whether it was installed on university systems remain unverified.</td></tr>
+                  <tr><td><strong><code>httpx</code>.</strong> Saved HTTP fingerprinting output and a reference in a launcher script.</td><td>The archived output is consistent with HTTP probing and service fingerprinting.</td></tr>
+                  <tr><td><strong>Nuclei.</strong> Saved results and a reference in a launcher script.</td><td>The results support template-based scanning. Most entries were informational. Exploitation remains unverified.</td></tr>
+                  <tr><td><strong>Playwright and Chromium.</strong> Browser automation code, run logs and saved browser state.</td><td>The artifacts document automation attempts that reached authentication. One recorded run stopped during authentication, with successful login unverified.</td></tr>
+                  <tr><td><strong>ARTeX.</strong> Startup and configuration files, plus task definitions naming the institution.</td><td>The files document tool preparation and explicit targeting. The link between an executed ARTeX task and captured HTTP activity remains unresolved.</td></tr>
+                  <tr><td><strong>Prepared webshells.</strong> Source code and packaged components recovered from the exposed directory.</td><td>Static review confirmed that the code could execute commands on a server. Deployment and use remain unverified.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <p>For scope, we compared institutional datasets within their own identifier systems. Some records overlapped. Other datasets lacked a reliable join key for linking their entries to the same people. The supplied corpus supports one explicit institutional target and two identities correlated with returned data. The number of people or accounts affected remains unknown.</p>
+          <p>The directory exposure itself is documented. It made institutional data and authentication material publicly accessible. The available captures leave initial access, session authorization, control of the MFA step, persistence, direct database access and transfer to any additional destination unresolved.</p>
+        </section>
+
+        <section class="report-section" id="detection" aria-labelledby="detection-heading">
+          <h2 id="detection-heading">Detection leads</h2>
+          <p>We found prepared webshells in the exposed directory. The recovered files and HTTP captures contained no evidence that the webshells were deployed or used.</p>
+          <p>Our offline YARA scan of the recovered files matched two generic PHP webshell rules from Signature-Base.</p>
+          <ul class="exhibit-links">
+            <li><code>EXT_WEBSHELL_PHP_Generic</code></li>
+            <li><code>WEBSHELL_PHP_Generic_Eval</code></li>
+          </ul>
+          <p>To investigate a similar match, compare the file against the approved deployment baseline and correlate web requests with process activity on the server. For suspicious sessions, correlate token issuance in identity-provider logs with the corresponding application audit records. <a href="https://github.com/Neo23x0/signature-base/blob/master/yara/gen_webshells.yar">Signature-Base webshell rules</a>.</p>
+        </section>
+
+        <section class="report-section conclusions" id="exhibits" aria-labelledby="exhibits-heading">
+          <h2 id="exhibits-heading">Evidence index</h2>
+          <ul class="exhibit-links">
+            <li><a href="#e-01">E-01</a> Acquisition ledger</li>
+            <li><a href="#e-02">E-02</a> Duplicate capture comparison</li>
+            <li><a href="#e-03">E-03</a> Recorded token issuance and use</li>
+            <li><a href="#e-04">E-04</a> Application and authentication outcomes</li>
+            <li><a href="#e-05">E-05</a> Tool artifacts and execution evidence</li>
+          </ul>
+          <p>The strongest conclusion comes from matching the issued token to the subsequent saved request and reading the response body. Establishing the origin, authorization and impact of the sessions would require identity, application and network telemetry from the institution.</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <p>Original article and graphics · <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+      <a href="#top">Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 956" role="img" aria-labelledby="sessions-title sessions-desc">
+  <title id="sessions-title">Three days in the saved captures</title>
+  <desc id="sessions-desc">On day one, a cloud service returned profile and mail metadata, institutional applications returned records, the help desk reported an authenticated session, and federation and an application error were recorded. On day two, a renewed token matched a request that returned records, and a separate staff portal response was associated with a second identity. Some operations were rejected or unresolved. On day three, saved traffic showed federation and a remote-access portal page. A VPN tunnel remained unverified.</desc>
+  <style>
+    text{font-family:system-ui,"Segoe UI",sans-serif;fill:#152b3c}
+    .heading{font-size:36px;font-weight:750;letter-spacing:-.6px}
+    .day{font-size:28px;font-weight:730;fill:#fff}
+    .status{font-size:23px;font-weight:740}
+    .detail{font-size:25px;fill:#253e4b}
+    .returned{fill:#17604f}
+    .federation{fill:#2b4d78}
+    .open{fill:#843f25}
+    .divider{stroke:#d8e4e0;stroke-width:2}
+  </style>
+  <rect x="1" y="1" width="638" height="954" rx="20" fill="#f3f8f6" stroke="#c6dad4" stroke-width="2"/>
+  <text x="32" y="59" class="heading">Three days in the saved captures</text>
+
+  <rect x="32" y="88" width="576" height="391" rx="14" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <path d="M46 88h548a14 14 0 0 1 14 14v36H32v-36a14 14 0 0 1 14-14Z" fill="#193749"/>
+  <text x="57" y="123" class="day">Day 1</text>
+  <rect x="57" y="157" width="6" height="67" rx="3" fill="#4a9f87"/>
+  <text x="77" y="177" class="status returned">Data returned</text>
+  <text x="77" y="205" class="detail">Cloud profile and mailbox metadata</text>
+  <text x="77" y="233" class="detail">Institutional application records</text>
+  <line x1="57" x2="584" y1="247" y2="247" class="divider"/>
+  <rect x="57" y="261" width="6" height="50" rx="3" fill="#4a9f87"/>
+  <text x="77" y="280" class="status returned">Session reported</text>
+  <text x="77" y="308" class="detail">Help desk reported an authenticated session</text>
+  <line x1="57" x2="584" y1="321" y2="321" class="divider"/>
+  <rect x="57" y="336" width="6" height="50" rx="3" fill="#7498c1"/>
+  <text x="77" y="355" class="status federation">Federation recorded</text>
+  <text x="77" y="383" class="detail">Sign-in flows for apps and remote access</text>
+  <line x1="57" x2="584" y1="397" y2="397" class="divider"/>
+  <rect x="57" y="411" width="6" height="50" rx="3" fill="#d78e69"/>
+  <text x="77" y="430" class="status open">Failed operation</text>
+  <text x="77" y="458" class="detail">HTTP success with an application error</text>
+
+  <rect x="32" y="497" width="576" height="239" rx="14" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <path d="M46 497h548a14 14 0 0 1 14 14v36H32v-36a14 14 0 0 1 14-14Z" fill="#193749"/>
+  <text x="57" y="532" class="day">Day 2</text>
+  <rect x="57" y="566" width="6" height="72" rx="3" fill="#4a9f87"/>
+  <text x="77" y="586" class="status returned">Data returned</text>
+  <text x="77" y="614" class="detail">Renewed token matched a data request</text>
+  <text x="77" y="642" class="detail">Staff portal data linked to a second identity</text>
+  <line x1="57" x2="584" y1="657" y2="657" class="divider"/>
+  <rect x="57" y="671" width="6" height="50" rx="3" fill="#d78e69"/>
+  <text x="77" y="690" class="status open">Attempts</text>
+  <text x="77" y="718" class="detail">Rejected or unresolved operations</text>
+
+  <rect x="32" y="754" width="576" height="170" rx="14" fill="#fff" stroke="#c6dad4" stroke-width="2"/>
+  <path d="M46 754h548a14 14 0 0 1 14 14v36H32v-36a14 14 0 0 1 14-14Z" fill="#193749"/>
+  <text x="57" y="789" class="day">Day 3</text>
+  <rect x="57" y="823" width="6" height="50" rx="3" fill="#7498c1"/>
+  <text x="77" y="842" class="status federation">Federation recorded</text>
+  <text x="77" y="870" class="detail">Remote-access portal page returned</text>
+  <path d="M58 895h18" stroke="#d78e69" stroke-width="3" stroke-dasharray="5 4" stroke-linecap="round"/>
+  <text x="85" y="902" class="status open">VPN tunnel unverified</text>
+</svg>
