@@ -224,6 +224,8 @@ h2 {
 
 .report-section p + p { margin-top: 1rem; }
 .report-section p { max-width: 73ch; }
+#directory-evidence { margin-top: 1.75rem; }
+#directory-evidence-heading { margin-bottom: .4rem; }
 .section-lede { font-size: 1.15rem; color: #314858; line-height: 1.6; }
 
 .report-note {

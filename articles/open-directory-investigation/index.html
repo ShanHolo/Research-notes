@@ -67,13 +67,33 @@
           <p class="section-lede">An indexed file led us to a public directory containing several thousand files. Among the scripts and task definitions were saved HTTP exchanges involving a university’s applications.</p>
           <p>One pair of exchanges stood out. A token issued in one response appeared byte for byte in a later request, and the application returned records. A separate staff portal response could be tied to a second identity. A third service reported an authenticated session whose account could not be linked to either identity.</p>
           <p>The recovered startup files and task definitions link <strong>ARTeX</strong> to the operation’s preparation and targeting. Application activity is documented in the saved HTTP captures. The execution link between an individual ARTeX task and a captured request remains unverified.</p>
-          <p class="report-note">Institutional identifiers and exact dates are withheld. The public exhibits summarize retained evidence using aliases and redrawn figures.</p>
+          <p class="report-note">Institutional identifiers and exact dates are withheld. The public exhibits use redacted screenshots, aliases and redrawn figures.</p>
         </section>
 
         <section class="report-section" id="discovery" aria-labelledby="discovery-heading">
           <h2 id="discovery-heading">Discovery and collection</h2>
           <p>A historical file record in Hunt.io led me to the host, where I found the public directory listing. We used urlscan.io records to assess other candidates. The listing exposed configuration files, tasking material, structured datasets, logs and saved traffic. The directory server’s operator remained unverified.</p>
           <p>We used a custom Python collector built with Requests to retrieve listed files through Tor Browser’s SOCKS proxy. Across successive passes, the collector recorded retrieval outcomes and computed SHA-256 digests for the local copies. Size and hash verification checked the integrity of the copies used for review. Coverage remained partial. A separate attempt limited to recently modified files timed out before the root listing could be read.</p>
+
+          <section id="directory-evidence" aria-labelledby="directory-evidence-heading">
+            <h3 id="directory-evidence-heading">Screenshots from the open directory</h3>
+            <p>These cropped screenshots document what was visible in the browser during collection. Opaque masks cover addresses, filenames and sensitive script contents.</p>
+
+            <figure class="figure">
+              <img src="./evidence/directory-scripts.png" width="932" height="535" loading="lazy" alt="Redacted browser screenshot showing a directory listing with multiple shell script entries.">
+              <figcaption><strong>Shell scripts in the directory listing.</strong> Several <code>.sh</code> files appear as individual links.</figcaption>
+            </figure>
+
+            <figure class="figure">
+              <img src="./evidence/startup-script.png" width="721" height="261" loading="lazy" alt="Redacted startup script screenshot with the Bash interpreter line and the ARTeX name visible.">
+              <figcaption><strong>ARTeX startup script.</strong> The screenshot shows the script as served during collection. Its execution remains unverified.</figcaption>
+            </figure>
+
+            <figure class="figure">
+              <img src="./evidence/directory-artifacts.png" width="932" height="633" loading="lazy" alt="Redacted browser screenshot of a directory listing with JSON, XML, HAR and PHP extensions visible.">
+              <figcaption><strong>Mixed file types in the exposed listing.</strong> The visible extensions include HAR, XML, JSON and PHP.</figcaption>
+            </figure>
+          </section>
 
           <figure class="figure">
             <img src="./figures/collection.svg" width="640" height="728" loading="lazy" alt="An indexed file led to a public listing. Partial acquisition and a verified local inventory yielded captures, tasking artifacts and tool output.">
@@ -261,7 +281,7 @@
         <section class="report-section conclusions" id="exhibits" aria-labelledby="exhibits-heading">
           <h2 id="exhibits-heading">Evidence index</h2>
           <ul class="exhibit-links">
-            <li><a href="#e-01">E-01</a> Acquisition ledger</li>
+            <li><a href="#e-01">E-01</a> Acquisition ledger and <a href="#directory-evidence">redacted screenshots</a></li>
             <li><a href="#e-02">E-02</a> Duplicate capture comparison</li>
             <li><a href="#e-03">E-03</a> Recorded token issuance and use</li>
             <li><a href="#e-04">E-04</a> Application and authentication outcomes</li>
